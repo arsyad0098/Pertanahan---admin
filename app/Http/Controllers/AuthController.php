@@ -3,86 +3,96 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\UserAdmin;
 
 class AuthController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan form login.
      */
     public function showLoginForm()
     {
-        return view('login');
+        return view('admin.auth.login');
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Proses login admin.
      */
     public function login(Request $request)
     {
-         $request->validate([
-            'username' => 'required',
-            'password' => [
-                'required',
-                'min:3',
-                'regex:/[A-Z]/' // harus ada minimal satu huruf kapital
-            ],
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:3',
         ], [
-            'username.required' => 'Username wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal terdiri dari 3 karakter.',
-            'password.regex' => 'Password harus mengandung minimal satu huruf kapital.',
+            'password.min' => 'Password minimal 3 karakter.',
         ]);
 
-        
-        if ($request->username === 'arsyad' && $request->password === 'Ramadhan') {
-           
-            return redirect()->route('tanah')->with('success', 'Berhasil login!');
-        } else {
-            
-            return back()->withErrors([
-                'login' => 'Username atau password salah!',
-            ])->withInput();
+    
+        $user = UserAdmin::where('email', $request->email)->first();
+
+        // Jika user ditemukan dan password cocok
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Simpan session login
+            session([
+                'admin_logged_in' => true,
+                'admin_email' => $user->email,
+                'admin_name' => $user->nama,
+            ]);
+
+            return redirect()->route('jenis_penggunaan.index')->with('success', 'Berhasil login!');
         }
 
+        // Jika gagal login
+        return back()->withErrors([
+            'login' => 'Email atau password salah!',
+        ])->withInput();
     }
 
     /**
-     * Display the specified resource.
+     * Tampilkan form register.
      */
-    public function show(string $id)
+    public function showRegisterForm()
     {
-        //
+        return view('admin.auth.register');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Proses registrasi admin baru.
      */
-    public function edit(string $id)
+    public function register(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:user_admin,email',
+            'password' => 'required|min:6|confirmed',
+        ], [
+            'nama.required' => 'Nama wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'password.required' => 'Password wajib diisi.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        ]);
+
+        // Simpan user baru
+        UserAdmin::create([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), 
+        ]);
+
+        return redirect()->route('admin.login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Logout admin.
      */
-    public function update(Request $request, string $id)
+    public function logout()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        session()->flush(); // hapus semua session
+        return redirect()->route('admin.login')->with('success', 'Anda telah logout.');
     }
 }

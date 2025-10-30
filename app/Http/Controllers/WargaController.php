@@ -10,12 +10,12 @@ class WargaController extends Controller
     public function index()
     {
         $data = Warga::all();
-        return view('admin.persil.warga.index', compact('data'));
+        return view('admin.warga.index', compact('data'));
     }
 
     public function create()
     {
-        return view('admin.persil.warga.create');
+        return view('admin.warga.create');
     }
 
     public function store(Request $request)
@@ -37,7 +37,7 @@ class WargaController extends Controller
     public function edit($id)
     {
         $data = Warga::findOrFail($id);
-        return view('admin.persil.warga.edit', compact('data'));
+        return view('admin.warga.edit', compact('data'));
     }
 
     public function update(Request $request, $id)

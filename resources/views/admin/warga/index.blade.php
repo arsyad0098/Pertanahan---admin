@@ -1,25 +1,23 @@
 @extends('admin.layouts.app')
 
-
-@section('title', 'Data Penggunaan Tanah | Dashboard')
-
 @section('content')
 <nav aria-label="breadcrumb" class="d-none d-md-inline-block mb-3">
     <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
         <li class="breadcrumb-item">
             <a href="#"><i class="bi bi-house-door"></i></a>
         </li>
-        <li class="breadcrumb-item"><a href="#">Persil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data Warga</li>
     </ol>
 </nav>
 
+<!-- Card Data -->
 <div class="card border-0 shadow-lg rounded-4 animate__animated animate__fadeInUp">
-    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white rounded-top-4 py-3">
-        <h5 class="mb-0"><i class="bi bi-clipboard-data me-2"></i>Data Penggunaan</h5>
-        <a href="{{ route('jenis_penggunaan.create') }}" 
-           class="btn btn-light text-primary fw-semibold shadow-sm btn-custom"
-           style="background-color: #ffffff; color: #0d6efd; border: 1px solid #ffffff;">
-           + Tambah Data
+    <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 d-flex align-items-center">
+            <i class="bi bi-people-fill me-2"></i> Data Warga
+        </h5>
+        <a href="{{ route('warga.create') }}" class="btn btn-add shadow-sm btn-custom">
+            <i class="bi bi-plus-circle me-1"></i> Tambah Data
         </a>
     </div>
 
@@ -36,8 +34,10 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th scope="col" style="width: 5%">No</th>
-                        <th scope="col">Nama Penggunaan</th>
-                        <th scope="col">Keterangan</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">NIK</th>
+                        <th scope="col">Alamat</th>
+                        <th scope="col" style="width: 10%">RT/RW</th>
                         <th scope="col" style="width: 20%">Aksi</th>
                     </tr>
                 </thead>
@@ -45,16 +45,15 @@
                     @forelse($data as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $item->nama_penggunaan }}</td>
-                        <td>{{ $item->keterangan ?? '-' }}</td>
+                        <td>{{ $item->nama }}</td>
+                        <td>{{ $item->nik }}</td>
+                        <td>{{ $item->alamat }}</td>
+                        <td>{{ $item->rt }}/{{ $item->rw }}</td>
                         <td>
-                            <a href="{{ route('jenis_penggunaan.edit', $item->jenis_id) }}" 
-                               class="btn btn-sm btn-warning me-2 btn-custom">
+                            <a href="{{ route('warga.edit', $item->id) }}" class="btn btn-sm btn-warning me-2 btn-custom">
                                 <i class="bi bi-pencil-square me-1"></i> Edit
                             </a>
-                            <form action="{{ route('jenis_penggunaan.destroy', $item->jenis_id) }}" 
-                                  method="POST" class="d-inline"
-                                  onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                            <form action="{{ route('warga.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger btn-custom">
@@ -65,8 +64,8 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center text-muted py-4">
-                            <i class="bi bi-info-circle me-1"></i> Belum ada data
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="bi bi-info-circle me-1"></i> Belum ada data warga
                         </td>
                     </tr>
                     @endforelse
