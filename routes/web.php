@@ -11,7 +11,7 @@ use App\Http\Controllers\JenisPenggunaanController;
 //  ROUTE UTAMA
 // =========================
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.auth.login');
 });
 
 // =========================

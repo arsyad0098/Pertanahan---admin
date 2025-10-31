@@ -31,7 +31,7 @@ class AuthController extends Controller
             'password.min' => 'Password minimal 3 karakter.',
         ]);
 
-    
+
         $user = UserAdmin::where('email', $request->email)->first();
 
         // Jika user ditemukan dan password cocok
@@ -81,7 +81,7 @@ class AuthController extends Controller
         UserAdmin::create([
             'nama' => $request->nama,
             'email' => $request->email,
-            'password' => Hash::make($request->password), 
+            'password' => Hash::make($request->password),
         ]);
 
         return redirect()->route('admin.login')->with('success', 'Registrasi berhasil! Silakan login.');

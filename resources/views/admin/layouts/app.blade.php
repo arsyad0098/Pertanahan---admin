@@ -31,6 +31,7 @@
 
 <body>
     @include('admin.layouts._sidebar')
+    @include('admin.layouts._header')
 
     <main class="content px-4 py-4 bg-light">
         @yield('content')
