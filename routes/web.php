@@ -11,7 +11,7 @@ use App\Http\Controllers\JenisPenggunaanController;
 //  ROUTE UTAMA
 // =========================
 Route::get('/', function () {
-    return view('admin.auth.login');
+    return view('pages.auth.login');
 });
 
 // =========================
@@ -31,7 +31,7 @@ Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logo
 Route::get('/adminTanah', [TanahController::class, 'index'])->name('tanah');
 
 // Halaman setelah login
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
 // =========================
 //  DATA MASTER

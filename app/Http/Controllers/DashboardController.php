@@ -2,63 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisPenggunaan;
+use App\Models\Warga;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display dashboard with statistics
      */
     public function index()
     {
-        return view ('admin.dashboard');
-    }
+        // Hitung total data penggunaan tanah
+        $totalData = JenisPenggunaan::count();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        // Hitung status aktif (semua data dianggap aktif)
+        $statusAktif = JenisPenggunaan::count();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // Hitung total warga
+        $totalWarga = Warga::count();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        // Hitung jumlah RT yang terdaftar
+        $totalRT = Warga::distinct('rt')->count('rt');
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        // Hitung jumlah RW yang terdaftar
+        $totalRW = Warga::distinct('rw')->count('rw');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        // Data untuk chart atau keperluan lain (opsional)
+        $dataPerRT = Warga::selectRaw('rt, COUNT(*) as total')
+            ->groupBy('rt')
+            ->orderBy('rt')
+            ->get();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $dataPerRW = Warga::selectRaw('rw, COUNT(*) as total')
+            ->groupBy('rw')
+            ->orderBy('rw')
+            ->get();
+
+        return view('dashboard', compact(
+            'totalData',
+            'statusAktif',
+            'totalWarga',
+            'totalRT',
+            'totalRW',
+            'dataPerRT',
+            'dataPerRW'
+        ));
     }
 }
