@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\JenisPenggunaanController;
+use App\Http\Controllers\DataUserController;
 
 // =========================
 //  ROUTE UTAMA
@@ -38,4 +39,6 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.das
 // =========================
 Route::resource('warga', WargaController::class);
 Route::resource('jenis_penggunaan', JenisPenggunaanController::class);
+
+Route::resource('data_user', DataUserController::class);
 

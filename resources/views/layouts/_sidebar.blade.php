@@ -35,6 +35,12 @@
                     <span>Data Warga</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('data_user.index') }}" class="nav-link">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Data User</span>
+                </a>
+            </li>
         </ul>
 
         <!-- Management Menu -->
@@ -80,7 +86,7 @@
 
         <!-- Logout Button -->
         <a href="{{ route('admin.login') }}"
-           style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none;">
+            style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none;">
             <i class="bi bi-box-arrow-right" style="font-size: 1.25rem;"></i>
             <span>Keluar Sistem</span>
         </a>

@@ -1,4 +1,4 @@
-@extends('admin.layouts.admin.app')
+@extends('layouts.app')
 
 
 @section('title', 'Edit Data Warga')

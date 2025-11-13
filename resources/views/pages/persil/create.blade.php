@@ -1,4 +1,4 @@
-@extends('admin.layouts.admin.app')
+@extends('layouts.app')
 
 @section('content')
     <nav aria-label="breadcrumb" class="d-none d-md-inline-block mb-3">

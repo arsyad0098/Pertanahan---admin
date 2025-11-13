@@ -15,7 +15,7 @@ class WargaController extends Controller
 
     public function create()
     {
-        return view('admin.pages.warga.create');
+        return view('pages.warga.create');
     }
 
     public function store(Request $request)
@@ -37,7 +37,7 @@ class WargaController extends Controller
     public function edit($id)
     {
         $data = Warga::findOrFail($id);
-        return view('admin.pages.warga.edit', compact('data'));
+        return view('pages.warga.edit', compact('data'));
     }
 
     public function update(Request $request, $id)
