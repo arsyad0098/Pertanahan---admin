@@ -68,7 +68,7 @@ class DataUserController extends Controller
 
         $user->update($request->all());
 
-        return redirect()->route('pages.user.index')
+        return redirect()->route('data_user.index')
             ->with('success', 'Data user berhasil diperbarui!');
     }
 
@@ -77,7 +77,7 @@ class DataUserController extends Controller
         $user = DataUser::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('pages.user.index')
+        return redirect()->route('data_user.index')
             ->with('success', 'Data user berhasil dihapus!');
     }
 }
