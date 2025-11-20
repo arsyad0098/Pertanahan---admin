@@ -21,14 +21,30 @@ class WargaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama'   => 'required|string|max:255',
-            'nik'    => 'required|string|max:20|unique:warga,nik',
-            'alamat' => 'required|string',
-            'rt'     => 'required|string|max:3',
-            'rw'     => 'required|string|max:3',
+            'no_ktp'       => 'required|string|max:20|unique:warga,no_ktp',
+            'nama'         => 'required|string|max:255',
+            'jenis_kelamin'=> 'nullable|string|max:50',
+            'agama'        => 'nullable|string|max:50',
+            'pekerjaan'    => 'nullable|string|max:100',
+            'telp'         => 'nullable|string|max:20',
+            'email'        => 'nullable|email|max:255',
+            'alamat'       => 'nullable|string',
+            'rt'           => 'nullable|string|max:3',
+            'rw'           => 'nullable|string|max:3',
         ]);
 
-        Warga::create($request->all());
+        Warga::create($request->only([
+            'no_ktp',
+            'nama',
+            'jenis_kelamin',
+            'agama',
+            'pekerjaan',
+            'telp',
+            'email',
+            'alamat',
+            'rt',
+            'rw',
+        ]));
 
         return redirect()->route('warga.index')
                          ->with('success', 'Data warga berhasil ditambahkan!');
@@ -45,14 +61,30 @@ class WargaController extends Controller
         $data = Warga::findOrFail($id);
 
         $request->validate([
-            'nama'   => 'required|string|max:255',
-            'nik'    => 'required|string|max:20|unique:warga,nik,' . $id,
-            'alamat' => 'required|string',
-            'rt'     => 'required|string|max:3',
-            'rw'     => 'required|string|max:3',
+            'no_ktp'       => 'required|string|max:20|unique:warga,no_ktp,' . $id . ',warga_id',
+            'nama'         => 'required|string|max:255',
+            'jenis_kelamin'=> 'nullable|string|max:50',
+            'agama'        => 'nullable|string|max:50',
+            'pekerjaan'    => 'nullable|string|max:100',
+            'telp'         => 'nullable|string|max:20',
+            'email'        => 'nullable|email|max:255',
+            'alamat'       => 'nullable|string',
+            'rt'           => 'nullable|string|max:3',
+            'rw'           => 'nullable|string|max:3',
         ]);
 
-        $data->update($request->all());
+        $data->update($request->only([
+            'no_ktp',
+            'nama',
+            'jenis_kelamin',
+            'agama',
+            'pekerjaan',
+            'telp',
+            'email',
+            'alamat',
+            'rt',
+            'rw',
+        ]));
 
         return redirect()->route('warga.index')
                          ->with('success', 'Data warga berhasil diperbarui!');

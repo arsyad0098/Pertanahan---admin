@@ -176,7 +176,7 @@
                     </div>
                     <div style="flex: 1;">
                         <div style="color: #64748b; font-size: 0.875rem; margin-bottom: 0.25rem;">Kelurahan</div>
-                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--dark-bg);">Bina Dera</div>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--dark-bg);">-</div>
                     </div>
                 </div>
             </div>
@@ -240,7 +240,7 @@
                 <div style="color: #64748b; line-height: 1.8;">
                     <p style="margin-bottom: 1rem;">
                         <i class="bi bi-check-circle-fill me-2" style="color: var(--primary-green);"></i>
-                        Sistem Pertanahan Digital Kelurahan Bina Dera
+                        Sistem Pertanahan Digital Kelurahan Bina Desa
                     </p>
                     <p style="margin-bottom: 1rem;">
                         <i class="bi bi-check-circle-fill me-2" style="color: var(--primary-green);"></i>

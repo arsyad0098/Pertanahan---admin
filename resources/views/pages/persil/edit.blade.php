@@ -1,120 +1,105 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Data Persil')
+
 @section('content')
-    <div class="py-4">
-        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-                <li class="breadcrumb-item">
-                    <a href="#">
-                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                            </path>
-                        </svg>
-                    </a>
-                </li>
-                <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Edit Data</li>
-            </ol>
-        </nav>
-        <div class="d-flex justify-content-between w-100 flex-wrap">
-            <div class="mb-3 mb-lg-0">
-                <h1 class="h4">Edit Data</h1>
-                <p class="mb-0">Form untuk mengedit data.</p>
-            </div>
-            <div>
-                <a href="{{ route('jenis_penggunaan.index') }}" class="btn btn-primary"><i
-                        class="far fa-question-circle me-1"></i> Kembali</a>
-            </div>
+
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb" style="background: transparent; padding: 0;">
+            <li class="breadcrumb-item">
+                <a href="{{ url('/') }}" style="color: #64748b;">
+                    <i class="bi bi-house-door-fill"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('persil.index') }}" style="color: #64748b;">Data Persil</a>
+            </li>
+            <li class="breadcrumb-item active" style="color: var(--primary-green); font-weight: 600;">
+                Edit Data Persil
+            </li>
+        </ol>
+    </nav>
+
+    <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="card-header">
+            <h5 class="mb-0">Edit Data Persil</h5>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12 mb-4">
-            <div class="card border-0 shadow components-section">
-                <div class="card-body">
-                    <form action="{{ route('jenis_penggunaan.update', $data->jenis_id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
+        <div class="card-body p-4">
+            <form action="{{ route('persil.update', $persil->persil_id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-                        <div class="row mb-4">
-                            <div class="col-lg-6 col-sm-12">
-                                <div class="mb-3">
-                                    <label for="nama_penggunaan" class="form-label">Nama Penggunaan</label>
-                                    <input type="text" id="nama_penggunaan" name="nama_penggunaan"
-                                        class="form-control @error('nama_penggunaan') is-invalid @enderror"
-                                        value="{{ old('nama_penggunaan', $data->nama_penggunaan) }}"
-                                        placeholder="Masukkan nama penggunaan" required>
-                                    @error('nama_penggunaan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+                <div class="row g-4">
 
-                            <div class="col-lg-6 col-sm-12">
-                                <div class="mb-3">
-                                    <label for="keterangan" class="form-label">Keterangan</label>
-                                    <textarea id="keterangan" name="keterangan" class="form-control @error('keterangan') is-invalid @enderror"
-                                        rows="3" placeholder="Tambahkan keterangan (opsional)">{{ old('keterangan', $data->keterangan) }}</textarea>
-                                    @error('keterangan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
+                    <!-- KODE PERSIL -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Kode Persil</label>
+                        <input type="text" name="kode_persil" class="form-control"
+                               value="{{ $persil->kode_persil }}" required>
+                    </div>
 
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Update</button>
-                            <a href="{{ route('jenis_penggunaan.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
-                        </div>
-                    </form>
+                    <!-- PEMILIK -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Nama Pemilik</label>
+                        <select name="pemilik_warga_id" class="form-select" required>
+                            @foreach($warga as $item)
+                                <option value="{{ $item->warga_id }}"
+                                    {{ $persil->pemilik_warga_id == $item->warga_id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- LUAS -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Luas (m²)</label>
+                        <input type="number" name="luas_m2" class="form-control"
+                               value="{{ $persil->luas_m2 }}" required>
+                    </div>
+
+                    <!-- PENGGUNAAN -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Penggunaan</label>
+                        <input type="text" name="penggunaan" class="form-control"
+                               value="{{ $persil->penggunaan }}" required>
+                    </div>
+
+                    <!-- ALAMAT -->
+                    <div class="col-md-12">
+                        <label class="form-label fw-semibold">Alamat Lahan</label>
+                        <input type="text" name="alamat_lahan" class="form-control"
+                               value="{{ $persil->alamat_lahan }}" required>
+                    </div>
+
+                    <!-- RT & RW -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">RT</label>
+                        <input type="number" name="rt" class="form-control"
+                               value="{{ $persil->rt }}" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">RW</label>
+                        <input type="number" name="rw" class="form-control"
+                               value="{{ $persil->rw }}" required>
+                    </div>
+
                 </div>
-            </div>
+
+                <div class="mt-4 d-flex justify-content-end gap-2">
+                    <a href="{{ route('persil.index') }}" class="btn btn-light">
+                        Batal
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+                        Simpan Perubahan
+                    </button>
+                </div>
+
+            </form>
         </div>
     </div>
-    <!-- Floating Button WhatsApp -->
-    <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20ingin%20bertanya%20tentang%20penggunaan%20tanah."
-        class="whatsapp-float" target="_blank" title="Hubungi Admin via WhatsApp">
-        <i class="bi bi-whatsapp"></i>
-    </a>
 
-    <style>
-        /* Floating WhatsApp Button */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background-color: #25D366;
-            color: white;
-            border-radius: 50%;
-            font-size: 28px;
-            padding: 15px 18px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 999;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-
-        .whatsapp-float:hover {
-            background-color: #1ebe5d;
-            transform: scale(1.15);
-            animation: none;
-        }
-
-        /* Animasi denyut lembut */
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
-            }
-
-            70% {
-                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-            }
-        }
-    </style>
 @endsection

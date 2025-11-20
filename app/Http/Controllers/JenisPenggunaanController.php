@@ -13,14 +13,14 @@ class JenisPenggunaanController extends Controller
     public function index()
     {
         $data = JenisPenggunaan::all();
-    return view('pages.persil.index', compact('data'));    }
+    return view('pages.jenisPenggunaan.index', compact('data'));    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-    return view('pages.persil.create');
+    return view('pages.jenisPenggunaan.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class JenisPenggunaanController extends Controller
     public function edit(string $id)
     {
         $data = JenisPenggunaan::findOrFail($id);
-    return view('pages.persil.edit', compact('data'));
+    return view('pages.jenisPenggunaan.edit', compact('data'));
     }
 
     /**

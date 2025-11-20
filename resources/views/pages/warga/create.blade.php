@@ -13,92 +13,117 @@
         </ol>
     </nav>
 
-    <div
-        class="card-header bg-primary text-white rounded-top-4 py-3 px-4 d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 d-flex align-items-center">
-            <i class="bi bi-person-plus me-2"></i> Tambah Data Warga
-        </h5>
-        <a href="{{ route('warga.index') }}" class="btn btn-outline-light btn-custom">
-            <i class="bi bi-arrow-left me-1"></i> Kembali
-        </a>
+    <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-header bg-primary text-white rounded-top-4 py-3 px-4 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 d-flex align-items-center">
+                <i class="bi bi-person-plus me-2"></i> Tambah Data Warga
+            </h5>
+            <a href="{{ route('warga.index') }}" class="btn btn-outline-light btn-custom">
+                <i class="bi bi-arrow-left me-1"></i> Kembali
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            {{-- Error Alert --}}
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Terjadi kesalahan!</strong>
+                    <ul class="mb-0 mt-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            {{-- FORM CREATE --}}
+            <form action="{{ route('warga.store') }}" method="POST">
+                @csrf
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Nama Warga</label>
+                        <input type="text" name="nama" class="form-control rounded-3 @error('nama') is-invalid @enderror"
+                            value="{{ old('nama') }}" required placeholder="Masukkan nama lengkap">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">NIK</label>
+                        <input type="text" name="no_ktp" class="form-control rounded-3 @error('no_ktp') is-invalid @enderror"
+                            value="{{ old('no_ktp') }}" required placeholder="Masukkan NIK">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-semibold">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" class="form-select rounded-3 @error('jenis_kelamin') is-invalid @enderror" required>
+                            <option value="">-- Pilih Jenis Kelamin --</option>
+                            <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-semibold">Agama</label>
+                        <select name="agama" class="form-select rounded-3 @error('agama') is-invalid @enderror" required>
+                            <option value="">-- Pilih Agama --</option>
+                            <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                            <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                            <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                            <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                            <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-semibold">Pekerjaan</label>
+                        <input type="text" name="pekerjaan" class="form-control rounded-3 @error('pekerjaan') is-invalid @enderror"
+                            value="{{ old('pekerjaan') }}" required placeholder="Masukkan pekerjaan">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Alamat</label>
+                    <textarea name="alamat" class="form-control rounded-3 @error('alamat') is-invalid @enderror" rows="3" required
+                        placeholder="Masukkan alamat lengkap">{{ old('alamat') }}</textarea>
+                </div>
+
+                {{-- GANTI RT/RW DENGAN GMAIL & TELEPON --}}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Gmail</label>
+                        <input type="email" name="email" class="form-control rounded-3 @error('email') is-invalid @enderror"
+                            value="{{ old('email') }}" required placeholder="Contoh: nama@gmail.com">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Telepon</label>
+                        <input type="text" name="telepon" class="form-control rounded-3 @error('telepon') is-invalid @enderror"
+                            value="{{ old('telepon') }}" required placeholder="Contoh: 081234567890">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-success shadow-sm btn-custom px-4">
+                        <i class="bi bi-check-circle me-1"></i> Simpan Data
+                    </button>
+                </div>
+
+            </form>
+        </div>
     </div>
 
-
-    <div class="card-body">
-        {{-- Alert Validasi --}}
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
-                <strong>Terjadi kesalahan!</strong>
-                <ul class="mb-0 mt-2">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        {{-- FORM CREATE --}}
-        <form action="{{ route('warga.store') }}" method="POST">
-            @csrf
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="nama" class="form-label fw-semibold">Nama Warga</label>
-                    <input type="text" name="nama" id="nama" class="form-control rounded-3"
-                        value="{{ old('nama') }}" required placeholder="Masukkan nama lengkap">
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label for="nik" class="form-label fw-semibold">NIK</label>
-                    <input type="text" name="nik" id="nik" class="form-control rounded-3"
-                        value="{{ old('nik') }}" required placeholder="Masukkan NIK">
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="alamat" class="form-label fw-semibold">Alamat</label>
-                <textarea name="alamat" id="alamat" class="form-control rounded-3" rows="3" required
-                    placeholder="Masukkan alamat lengkap">{{ old('alamat') }}</textarea>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="rt" class="form-label fw-semibold">RT</label>
-                    <input type="text" name="rt" id="rt" class="form-control rounded-3"
-                        value="{{ old('rt') }}" required placeholder="Contoh: 001">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="rw" class="form-label fw-semibold">RW</label>
-                    <input type="text" name="rw" id="rw" class="form-control rounded-3"
-                        value="{{ old('rw') }}" required placeholder="Contoh: 002">
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-end mt-4">
-                <button type="submit" class="btn btn-success shadow-sm btn-custom px-4">
-                    <i class="bi bi-check-circle me-1"></i> Simpan Data
-                </button>
-            </div>
-        </form>
-    </div>
-    </div>
-    <!-- Floating Button WhatsApp -->
-    <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20ingin%20bertanya%20tentang%20penggunaan%20tanah."
-        class="whatsapp-float" target="_blank" title="Hubungi Admin via WhatsApp">
+    <a href="https://wa.me/6281234567890?text={{ urlencode('Halo Admin, saya ingin bertanya tentang data warga.') }}"
+        class="whatsapp-float" target="_blank">
         <i class="bi bi-whatsapp"></i>
     </a>
 
     <style>
-        /* Floating WhatsApp Button */
         .whatsapp-float {
             position: fixed;
             bottom: 25px;
@@ -113,26 +138,15 @@
             transition: all 0.3s ease;
             animation: pulse 2s infinite;
         }
-
         .whatsapp-float:hover {
             background-color: #1ebe5d;
             transform: scale(1.15);
             animation: none;
         }
-
-        /* Animasi denyut lembut */
         @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
-            }
-
-            70% {
-                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-            }
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
     </style>
 @endsection

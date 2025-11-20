@@ -41,6 +41,13 @@
                     <span>Data User</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('persil.index') }}" class="nav-link">
+                    <i class="bi bi-map-fill"></i>
+                    <span>Data Persil</span>
+                </a>
+            </li>
+
         </ul>
 
         <!-- Management Menu -->
