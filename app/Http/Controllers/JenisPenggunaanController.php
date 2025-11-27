@@ -10,10 +10,24 @@ class JenisPenggunaanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = JenisPenggunaan::all();
-    return view('pages.jenisPenggunaan.index', compact('data'));    }
+    // Kolom yang boleh difilter dropdown
+    $filterableColumns = ['nama_penggunaan'];
+
+    // Kolom yang boleh dicari via search
+    $searchableColumns = ['nama_penggunaan', 'keterangan']; // bebas kamu tambah
+
+    $data = JenisPenggunaan::filter($request, $filterableColumns)
+                ->search($request, $searchableColumns)
+                ->paginate(10)
+                ->withQueryString();
+
+    // Semua data untuk dropdown
+    $data_all = JenisPenggunaan::all();
+
+    return view('pages.jenisPenggunaan.index', compact('data', 'data_all'));
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -384,6 +384,42 @@
             animation: fadeInUp 0.6s ease-out;
         }
     </style>
+    <style>
+    .pagination {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination .page-item .page-link {
+        color: #198754;
+        border-radius: 8px;
+        margin: 0 4px;
+        border: 1px solid #19875433;
+        padding: 6px 12px;
+        transition: 0.2s ease;
+        font-weight: 500;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #198754;
+        border-color: #198754;
+        color: white;
+        box-shadow: 0 0 6px rgba(25,135,84,0.4);
+    }
+
+    .pagination .page-item .page-link:hover {
+        background-color: #198754;
+        color: white;
+        border-color: #198754;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+</style>
+
+
 </head>
 
 <body>

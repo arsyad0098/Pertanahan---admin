@@ -9,10 +9,20 @@ use Illuminate\Http\Request;
 
 class PersilController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Persil::with('warga')->get();
-        return view('pages.persil.index', compact('data'));
+        // Query dengan relasi warga, search, dan filter
+        $data = Persil::with('warga')
+                    ->search($request)      // Tambahkan scope search
+                    ->filter($request)       // Filter RT & RW
+                    ->paginate(10)
+                    ->withQueryString();    // Pertahankan query string di pagination
+
+        // Dropdown filter
+        $listRT = Persil::select('rt')->distinct()->orderBy('rt')->get();
+        $listRW = Persil::select('rw')->distinct()->orderBy('rw')->get();
+
+        return view('pages.persil.index', compact('data', 'listRT', 'listRW'));
     }
 
     public function create()

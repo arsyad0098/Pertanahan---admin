@@ -7,10 +7,35 @@ use Illuminate\Http\Request;
 
 class WargaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Warga::all();
-        return view('pages.warga.index', compact('data'));
+    // Filter dropdown
+    $filterable = ['jenis_kelamin', 'agama', 'pekerjaan', 'rt', 'rw'];
+
+    // Kolom yang bisa dicari via search bebas
+    $searchableColumns = ['nama', 'no_ktp', 'email', 'alamat', 'pekerjaan'];
+
+    // Query utama
+    $data = Warga::filter($request, $filterable)
+                 ->search($request, $searchableColumns)
+                 ->paginate(10)
+                 ->withQueryString();
+
+    // Data dropdown
+    $jenis_kelamin_all = Warga::select('jenis_kelamin')->distinct()->get();
+    $agama_all         = Warga::select('agama')->distinct()->get();
+    $pekerjaan_all     = Warga::select('pekerjaan')->distinct()->get();
+    $rt_all            = Warga::select('rt')->distinct()->get();
+    $rw_all            = Warga::select('rw')->distinct()->get();
+
+    return view('pages.warga.index', compact(
+        'data',
+        'jenis_kelamin_all',
+        'agama_all',
+        'pekerjaan_all',
+        'rt_all',
+        'rw_all'
+    ));
     }
 
     public function create()

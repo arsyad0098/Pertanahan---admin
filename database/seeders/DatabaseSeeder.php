@@ -10,6 +10,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             WargaPersilSeeder::class,
+            JenisPenggunaanSeeder::class, // tambahkan ini
+            CreateManyUsersSeeder::class,
+            WargaSeeder::class,
+            PersilSeeder::class
         ]);
     }
 }

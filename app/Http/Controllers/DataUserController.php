@@ -9,10 +9,21 @@ use Illuminate\Support\Facades\Validator;
 
 class DataUserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = DataUser::orderBy('created_at', 'desc')->get();
-        return view('pages.user.index', compact('data'));
+    $filterable = ['status'];
+    $searchableColumns = ['name', 'email'];
+
+    $data = DataUser::filter($request, $filterable)
+        ->search($request, $searchableColumns)
+        ->orderBy('created_at', 'desc')
+        ->paginate(10)
+        ->withQueryString();
+
+    $role_all   = DataUser::select('role')->distinct()->get();
+    $status_all = DataUser::select('status')->distinct()->get();
+
+    return view('pages.user.index', compact('data', 'role_all', 'status_all'));
     }
 
     public function create()
