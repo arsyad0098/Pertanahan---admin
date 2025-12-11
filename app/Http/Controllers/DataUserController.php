@@ -11,19 +11,19 @@ class DataUserController extends Controller
 {
     public function index(Request $request)
     {
-    $filterable = ['status'];
-    $searchableColumns = ['name', 'email'];
+        $filterable = ['status'];
+        $searchableColumns = ['name', 'email'];
 
-    $data = DataUser::filter($request, $filterable)
-        ->search($request, $searchableColumns)
-        ->orderBy('created_at', 'desc')
-        ->paginate(10)
-        ->withQueryString();
+        $data = DataUser::filter($request, $filterable)
+            ->search($request, $searchableColumns)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
 
-    $role_all   = DataUser::select('role')->distinct()->get();
-    $status_all = DataUser::select('status')->distinct()->get();
+        $role_all   = DataUser::select('role')->distinct()->get();
+        $status_all = DataUser::select('status')->distinct()->get();
 
-    return view('pages.user.index', compact('data', 'role_all', 'status_all'));
+        return view('pages.user.index', compact('data', 'role_all', 'status_all'));
     }
 
     public function create()
@@ -39,15 +39,22 @@ class DataUserController extends Controller
             'role' => 'required|string|max:50',
             'status' => 'required|in:active,inactive',
             'tanggal_daftar' => 'required|date',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return back()->withErrors($validator)->withInput();
         }
 
-        DataUser::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('profile_picture')) {
+            $filename = time() . '.' . $request->profile_picture->extension();
+            $request->profile_picture->move(public_path('uploads/profile'), $filename);
+            $data['profile_picture'] = $filename;
+        }
+
+        DataUser::create($data);
 
         return redirect()->route('data_user.index')
             ->with('success', 'Data user berhasil ditambahkan!');
@@ -69,15 +76,30 @@ class DataUserController extends Controller
             'role' => 'required|string|max:50',
             'status' => 'required|in:active,inactive',
             'tanggal_daftar' => 'required|date',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return back()->withErrors($validator)->withInput();
         }
 
-        $user->update($request->all());
+        $data = $request->all();
+
+        // Jika upload file baru
+        if ($request->hasFile('profile_picture')) {
+
+            // hapus foto lama
+            if ($user->profile_picture && file_exists(public_path('uploads/profile/' . $user->profile_picture))) {
+                unlink(public_path('uploads/profile/' . $user->profile_picture));
+            }
+
+            $filename = time() . '.' . $request->profile_picture->extension();
+            $request->profile_picture->move(public_path('uploads/profile'), $filename);
+
+            $data['profile_picture'] = $filename;
+        }
+
+        $user->update($data);
 
         return redirect()->route('data_user.index')
             ->with('success', 'Data user berhasil diperbarui!');

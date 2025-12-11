@@ -17,7 +17,8 @@ class DataUser extends Model
         'email',
         'role',
         'status',
-        'tanggal_daftar'
+        'tanggal_daftar',
+        'profile_picture'
     ];
 
     protected $casts = [

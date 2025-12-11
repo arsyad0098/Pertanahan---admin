@@ -22,6 +22,7 @@ class Warga extends Model
         'alamat',
         'rt',
         'rw',
+        'profile_picture', // ✅ TAMBAHKAN INI
     ];
 
     public function persil()

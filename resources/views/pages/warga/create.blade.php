@@ -39,8 +39,8 @@
                 </div>
             @endif
 
-            {{-- FORM CREATE --}}
-            <form action="{{ route('warga.store') }}" method="POST">
+            {{-- ✅ TAMBAHKAN enctype="multipart/form-data" --}}
+            <form action="{{ route('warga.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row">
@@ -93,7 +93,7 @@
                         placeholder="Masukkan alamat lengkap">{{ old('alamat') }}</textarea>
                 </div>
 
-                {{-- GANTI RT/RW DENGAN GMAIL & TELEPON --}}
+                {{-- GMAIL & TELEPON --}}
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-semibold">Gmail</label>
@@ -103,9 +103,25 @@
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-semibold">Telepon</label>
-                        <input type="text" name="telepon" class="form-control rounded-3 @error('telepon') is-invalid @enderror"
-                            value="{{ old('telepon') }}" required placeholder="Contoh: 081234567890">
+                        <input type="text" name="telp" class="form-control rounded-3 @error('telp') is-invalid @enderror"
+                            value="{{ old('telp') }}" required placeholder="Contoh: 081234567890">
                     </div>
+                </div>
+
+                {{-- ✅ INPUT FOTO PROFIL --}}
+                <div class="mb-3">
+                    <label for="profile_picture" class="form-label fw-semibold">
+                        <i class="bi bi-image me-1"></i> Foto Profil
+                    </label>
+                    <input type="file"
+                        id="profile_picture"
+                        name="profile_picture"
+                        class="form-control rounded-3 @error('profile_picture') is-invalid @enderror"
+                        accept="image/*">
+                    @error('profile_picture')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB</small>
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">

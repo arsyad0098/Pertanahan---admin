@@ -175,6 +175,13 @@
                         <td style="padding: 1.25rem 1rem; text-align:center;">
                             <div style="display:flex; gap:0.5rem; justify-content:center;">
 
+                                <!-- Tombol Detail -->
+                                <a href="{{ route('persil.show', $item->persil_id) }}"
+                                    class="btn btn-sm btn-info text-white"
+                                    title="Detail">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+
                                 <a href="{{ route('persil.edit', $item->persil_id) }}"
                                     class="btn btn-sm btn-warning text-white"
                                     title="Edit">

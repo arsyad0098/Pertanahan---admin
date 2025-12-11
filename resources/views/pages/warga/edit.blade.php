@@ -50,7 +50,8 @@
                 </div>
             @endif
 
-            <form action="{{ route('warga.update', $data->warga_id) }}" method="POST">
+            {{-- ✅ TAMBAHKAN enctype="multipart/form-data" --}}
+            <form action="{{ route('warga.update', $data->warga_id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -113,9 +114,36 @@
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-semibold">Telepon</label>
-                        <input type="text" name="telepon" class="form-control rounded-3 @error('telepon') is-invalid @enderror"
-                               value="{{ old('telepon', $data->telepon) }}" required placeholder="081234567890">
+                        <input type="text" name="telp" class="form-control rounded-3 @error('telp') is-invalid @enderror"
+                               value="{{ old('telp', $data->telp) }}" required placeholder="081234567890">
                     </div>
+                </div>
+
+                {{-- ✅ INPUT FOTO PROFIL + PREVIEW --}}
+                <div class="mb-3">
+                    <label for="profile_picture" class="form-label fw-semibold">
+                        <i class="bi bi-image me-1"></i> Foto Profil
+                    </label>
+                    
+                    {{-- Preview Foto Existing --}}
+                    @if ($data->profile_picture)
+                    <div class="mb-2">
+                        <img src="{{ asset('uploads/profile/' . $data->profile_picture) }}"
+                            alt="Profile Picture"
+                            style="width: 90px; height: 90px; border-radius: 10px; object-fit: cover; border: 2px solid #e2e8f0;">
+                        <p class="text-muted small mt-1">Foto saat ini</p>
+                    </div>
+                    @endif
+                    
+                    <input type="file"
+                        id="profile_picture"
+                        name="profile_picture"
+                        class="form-control rounded-3 @error('profile_picture') is-invalid @enderror"
+                        accept="image/*">
+                    @error('profile_picture')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB. Kosongkan jika tidak ingin mengubah foto.</small>
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">

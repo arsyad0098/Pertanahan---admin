@@ -174,7 +174,23 @@
                     @forelse($data as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $item->nama }}</td>
+                        
+                        {{-- ✅ NAMA + FOTO PROFIL --}}
+                        <td style="padding: 1.25rem 1rem; font-weight: 600;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div style="width: 40px; height: 40px; border-radius: 10px; overflow: hidden; background: rgba(59,130,246,0.15); display: flex; align-items: center; justify-content: center;">
+                                    @if($item->profile_picture)
+                                        <img src="{{ asset('uploads/profile/' . $item->profile_picture) }}"
+                                             alt="{{ $item->nama }}"
+                                             style="width: 100%; height: 100%; object-fit: cover;">
+                                    @else
+                                        <i class="bi bi-person-fill" style="color: #3b82f6;"></i>
+                                    @endif
+                                </div>
+                                <span>{{ $item->nama }}</span>
+                            </div>
+                        </td>
+                        
                         <td>{{ $item->no_ktp }}</td>
                         <td>{{ $item->jenis_kelamin ?? '-' }}</td>
                         <td>{{ $item->agama ?? '-' }}</td>
