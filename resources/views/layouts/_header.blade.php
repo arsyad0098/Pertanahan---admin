@@ -86,13 +86,23 @@
         <!-- User Dropdown -->
         <div class="dropdown">
             <div class="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://ui-avatars.com/api/?name=Admin&background=10b981&color=fff&bold=true"
-                     alt="Admin"
-                     class="user-avatar" />
-                <div class="user-info d-none d-lg-block">
-                    <div class="user-name">Admin System</div>
-                    <div class="user-role">Administrator</div>
-                </div>
+                @if(Auth::check())
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->nama) }}&background=10b981&color=fff&bold=true"
+                         alt="{{ Auth::user()->nama }}"
+                         class="user-avatar" />
+                    <div class="user-info d-none d-lg-block">
+                        <div class="user-name">{{ Auth::user()->nama }}</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                @else
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=10b981&color=fff&bold=true"
+                         alt="Admin"
+                         class="user-avatar" />
+                    <div class="user-info d-none d-lg-block">
+                        <div class="user-name">Admin System</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                @endif
                 <i class="bi bi-chevron-down d-none d-lg-block" style="color: #64748b; font-size: 0.875rem;"></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -117,16 +127,19 @@
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <a class="dropdown-item" href="#" style="color: #64748b;">
-                        <i class="bi bi-question-circle-fill"></i>
-                        <span>Bantuan & Dukungan</span>
+                        <i class="bi bi-clock-fill"></i>
+                        <span>Login Terakhir: {{ session('last_login') ?? '-' }}</span>
                     </a>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
-                    <a class="dropdown-item" href="{{ route('admin.login') }}" style="color: #ef4444;">
-                        <i class="bi bi-box-arrow-right"></i>
-                        <span>Keluar Sistem</span>
-                    </a>
+                    <form action="{{ route('admin.logout') }}" method="POST" style="margin: 0;">
+                        @csrf
+                        <button type="submit" class="dropdown-item" style="color: #ef4444; border: none; background: none; width: 100%; text-align: left; cursor: pointer; padding: 0.5rem 1rem;">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Keluar Sistem</span>
+                        </button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -153,5 +166,10 @@
     .dropdown-item:active {
         background-color: rgba(16, 185, 129, 0.1) !important;
         color: var(--primary-green) !important;
+    }
+    
+    /* Style untuk logout button */
+    .dropdown-item button:hover {
+        background-color: transparent !important;
     }
 </style>

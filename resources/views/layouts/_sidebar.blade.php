@@ -1,16 +1,13 @@
 <nav id="sidebarMenu" class="sidebar">
     <!-- Logo Section -->
     <div class="sidebar-logo">
-        <h4>
-            <div class="logo-icon">
-                <i class="bi bi-geo-alt-fill"></i>
-            </div>
-            <div>
-                <div style="font-size: 1rem; line-height: 1.2;">Sistem</div>
-                <div style="color: var(--primary-green); font-size: 0.875rem; font-weight: 500;">Pertanahan</div>
-            </div>
-        </h4>
+        <div class="logo-wrapper">
+            <img src="{{ asset('images/logo2.jpg') }}">
+            <!-- <h1>Sistem Pertanahan</h1>
+        <span>Admin Panel</span> -->
+        </div>
     </div>
+
 
     <!-- Menu Section -->
     <div class="sidebar-menu">
@@ -47,6 +44,13 @@
                     <span>Data Persil</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('pengembang.index') }}" class="nav-link">
+                    <i class="bi bi-person-badge me-2"></i>
+                    Identitas Pengembang
+                </a>
+            </li>
+
 
         </ul>
 
@@ -54,9 +58,9 @@
         <div class="menu-section-title mt-4">Manajemen</div>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="bi bi-map-fill"></i>
-                    <span>Peta Wilayah</span>
+                <a href="{{ route('dokumentasi.index') }}" class="nav-link">
+                    <i class="bi bi-camera-fill"></i>
+                    <span>Dokumentasi</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -99,3 +103,47 @@
         </a>
     </div>
 </nav>
+<style>
+    /* ===== Sidebar Logo ===== */
+    .sidebar-logo {
+        padding: 2rem 1rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    /* LOGO */
+    .logo-wrapper img {
+        width: 200px;
+        /* 👈 DIBESARKAN */
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, .35));
+        /* biar nongol */
+    }
+
+    /* JUDUL */
+    .logo-wrapper h1 {
+        font-size: 1.05rem;
+        /* lebih kebaca */
+        font-weight: 700;
+        color: #22c55e;
+        margin: 0;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    /* SUBTITLE */
+    .logo-wrapper span {
+        font-size: 0.72rem;
+        color: #cbd5f5;
+        /* lebih terang */
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+    }
+</style>

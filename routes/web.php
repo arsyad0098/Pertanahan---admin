@@ -8,38 +8,58 @@ use App\Http\Controllers\WargaController;
 use App\Http\Controllers\JenisPenggunaanController;
 use App\Http\Controllers\DataUserController;
 use App\Http\Controllers\PersilController;
+use App\Http\Controllers\PengembangController;
+use App\Http\Controllers\DokumentasiController;
+
 
 // =========================
-//  ROUTE UTAMA
+//  ROUTE AUTH (Tidak Perlu Login)
 // =========================
 Route::get('/', function () {
-    return view('pages.auth.login');
+    return redirect()->route('admin.login');
 });
 
-// =========================
-//  AUTENTIKASI ADMIN
-// =========================
-Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.submit');
-
-Route::get('/admin/register', [AuthController::class, 'showRegisterForm'])->name('admin.register');
-Route::post('/admin/register', [AuthController::class, 'register'])->name('admin.register.submit');
-
-Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
+Route::get('/auth/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/auth/login', [AuthController::class, 'login'])->name('admin.login.post');
+Route::get('/auth/register', [AuthController::class, 'showRegisterForm'])->name('admin.register');
+Route::post('/auth/register', [AuthController::class, 'register'])->name('admin.register.post');
 
 // =========================
-//  HALAMAN ADMIN
+//  ROUTE YANG PERLU LOGIN (Dengan Middleware)
 // =========================
-Route::get('/adminTanah', [TanahController::class, 'index'])->name('tanah');
+Route::middleware(['auth.admin'])->group(function () {
 
-// Halaman setelah login
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    // Logout - HARUS POST METHOD
+    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-// =========================
-//  DATA MASTER
-// =========================
-Route::resource('warga', WargaController::class);
-Route::resource('jenis_penggunaan', JenisPenggunaanController::class);
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-Route::resource('data_user', DataUserController::class);
-Route::resource('persil', PersilController::class);
+    // Halaman Admin (jika masih dipakai)
+    Route::get('/adminTanah', [TanahController::class, 'index'])->name('tanah');
+
+    // =========================
+    //  DATA MASTER
+    // =========================
+    Route::resource('warga', WargaController::class);
+    Route::resource('jenis_penggunaan', JenisPenggunaanController::class);
+    Route::resource('data_user', DataUserController::class);
+    Route::resource('persil', PersilController::class);
+
+
+    Route::get('/pengembang', [PengembangController::class, 'index'])
+        ->name('pengembang.index');
+    // Route untuk Persil
+    Route::resource('persil', PersilController::class);
+
+    // Route khusus untuk delete media (TAMBAHKAN INI)
+    Route::delete('persil/{persil}/media/{media}', [PersilController::class, 'deleteMedia'])
+        ->name('persil.media.delete');
+
+
+
+    // Route untuk Dokumentasi
+    Route::get('/dokumentasi', [DokumentasiController::class, 'index'])->name('dokumentasi.index');
+    Route::post('/dokumentasi', [DokumentasiController::class, 'store'])->name('dokumentasi.store');
+    Route::delete('/dokumentasi/{id}', [DokumentasiController::class, 'destroy'])->name('dokumentasi.destroy');
+});

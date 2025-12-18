@@ -151,13 +151,15 @@
                 <div class="row g-3">
                     @foreach($images as $image)
                     <div class="col-md-4 col-lg-3">
-                        <div class="position-relative gallery-item" style="border-radius: 12px; overflow: hidden;">
-                            <img src="{{ asset('storage/uploads/' . $image->file_name) }}" 
+                        <div class="position-relative gallery-item" style="border-radius: 12px; overflow: hidden; background: #f8f9fa;">
+                            
+                            <img src="{{ $image->url }}" 
                                  class="img-fluid w-100 gallery-image" 
                                  style="height: 200px; object-fit: cover; cursor: pointer;"
-                                 data-image-url="{{ asset('storage/uploads/' . $image->file_name) }}"
+                                 data-image-url="{{ $image->url }}"
                                  data-caption="{{ $image->caption ?? $persil->kode_persil }}"
-                                 alt="{{ $image->caption ?? $persil->kode_persil }}">
+                                 alt="{{ $image->caption ?? $persil->kode_persil }}"
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EGambar tidak ditemukan%3C/text%3E%3C/svg%3E'; this.style.objectFit='contain';">
                             
                             @if($image->caption)
                             <div class="position-absolute bottom-0 start-0 end-0 p-2" 
@@ -165,7 +167,27 @@
                                 <small class="text-white">{{ $image->caption }}</small>
                             </div>
                             @endif
+
+                            <!-- Badge info file -->
+                            <div class="position-absolute top-0 end-0 m-2">
+                                <span class="badge {{ $image->fileExists() ? 'bg-success' : 'bg-danger' }} bg-opacity-75 small" 
+                                      title="File: {{ $image->file_name }}">
+                                    <i class="bi {{ $image->fileExists() ? 'bi-check-circle' : 'bi-x-circle' }}"></i>
+                                </span>
+                            </div>
                         </div>
+
+                        @if(config('app.debug'))
+                        <!-- Debug Info (hanya tampil di mode debug) -->
+                        <div class="mt-1">
+                            <small class="text-muted d-block" style="font-size: 0.7rem;">
+                                {{ $image->file_name }}
+                            </small>
+                            <small class="text-muted d-block" style="font-size: 0.7rem;">
+                                Exists: {{ $image->fileExists() ? 'Yes' : 'No' }}
+                            </small>
+                        </div>
+                        @endif
                     </div>
                     @endforeach
                 </div>
@@ -204,13 +226,25 @@
                                 @if($doc->caption)
                                 <div class="text-muted small">{{ $doc->caption }}</div>
                                 @endif
+                                
+                                @if(!$doc->fileExists())
+                                <div class="text-danger small">
+                                    <i class="bi bi-exclamation-triangle"></i> File tidak ditemukan
+                                </div>
+                                @endif
                             </div>
 
-                            <a href="{{ asset('storage/uploads/' . $doc->file_name) }}" 
+                            @if($doc->fileExists())
+                            <a href="{{ $doc->url }}" 
                                target="_blank" 
                                class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-download"></i> Download
                             </a>
+                            @else
+                            <button class="btn btn-sm btn-outline-secondary" disabled>
+                                <i class="bi bi-x-circle"></i> Tidak Tersedia
+                            </button>
+                            @endif
                         </div>
                     </div>
                     @endforeach
@@ -254,12 +288,20 @@
 
 <style>
     .gallery-item {
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .gallery-item:hover {
         transform: scale(1.05);
         box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .gallery-image {
+        transition: opacity 0.3s ease;
+    }
+
+    .gallery-image:hover {
+        opacity: 0.9;
     }
 </style>
 

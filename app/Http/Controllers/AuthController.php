@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\UserAdmin;
 
 class AuthController extends Controller
@@ -14,7 +15,6 @@ class AuthController extends Controller
     public function showLoginForm()
     {
         return view('pages.auth.login');
-        
     }
 
     /**
@@ -32,17 +32,16 @@ class AuthController extends Controller
             'password.min' => 'Password minimal 3 karakter.',
         ]);
 
-
         $user = UserAdmin::where('email', $request->email)->first();
 
         // Jika user ditemukan dan password cocok
         if ($user && Hash::check($request->password, $user->password)) {
-            // Simpan session login
-            session([
-                'admin_logged_in' => true,
-                'admin_email' => $user->email,
-                'admin_name' => $user->nama,
-            ]);
+            
+            // Login user menggunakan Auth facade
+            Auth::login($user);
+            
+            // Simpan waktu login terakhir ke session
+            session(['last_login' => now()->format('d M Y, H:i')]);
 
             return redirect()->route('jenis_penggunaan.index')->with('success', 'Berhasil login!');
         }
@@ -93,6 +92,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        Auth::logout(); // logout menggunakan Auth facade
         session()->flush(); // hapus semua session
         return redirect()->route('admin.login')->with('success', 'Anda telah logout.');
     }

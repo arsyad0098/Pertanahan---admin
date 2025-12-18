@@ -24,7 +24,15 @@ class Media extends Model
      */
     public function getFileUrlAttribute()
     {
-        return Storage::url('uploads/' . $this->file_name);
+        return asset('storage/uploads/' . $this->file_name);
+    }
+
+    /**
+     * Accessor untuk URL (alias untuk file_url)
+     */
+    public function getUrlAttribute()
+    {
+        return $this->file_url;
     }
 
     /**
@@ -32,7 +40,7 @@ class Media extends Model
      */
     public function getFilePathAttribute()
     {
-        return storage_path('app/public/uploads/' . $this->file_name);
+        return storage_path('app/public/' . $this->file_name);
     }
 
     /**
@@ -114,5 +122,13 @@ class Media extends Model
               ->orWhere('mime_type', 'LIKE', '%excel%')
               ->orWhere('mime_type', 'LIKE', '%spreadsheet%');
         });
+    }
+
+    /**
+     * Check apakah file exists
+     */
+    public function fileExists()
+    {
+        return Storage::disk('public')->exists('uploads/' . $this->file_name);
     }
 }

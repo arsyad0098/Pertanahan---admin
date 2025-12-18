@@ -137,7 +137,7 @@
                                         style="width: 90px; height: 90px; border-radius: 10px; object-fit: cover; border: 2px solid #e2e8f0;">
                                     <p class="text-muted small mt-1">Foto saat ini</p>
                                 </div>
-                                @endif
+                                  @endif
                                 
                                 <input type="file"
                                     id="profile_picture"
@@ -148,7 +148,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="text-muted">Format: JPG, JPEG, PNG. Maksimal 2MB. Kosongkan jika tidak ingin mengubah foto.</small>
-                            </div>
+                          </div>
                         </div>
 
                     </div>

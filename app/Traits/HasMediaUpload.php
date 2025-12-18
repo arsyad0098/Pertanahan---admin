@@ -65,7 +65,7 @@ trait HasMediaUpload
             $fileName = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
 
             // Simpan file
-            $file->storeAs('public/uploads', $fileName);
+            $file->storeAs('uploads', $fileName, 'public');
 
             // Simpan ke database
             $this->media()->create([

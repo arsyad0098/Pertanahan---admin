@@ -55,8 +55,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Bagian kiri */
@@ -64,8 +71,7 @@
             position: relative;
             color: var(--white);
             flex: 1;
-            background: url('https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=900&q=80')
-                center/cover no-repeat;
+            background: url('https://images.bisnis.com/posts/2019/11/01/1165846/pertanahan-siap.jpg') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -91,15 +97,15 @@
             text-align: center;
         }
 
-        .logo-container {
+  .logo-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 25px;
+            margin-bottom: 150px;
         }
 
         .logo {
-            width: 120px;
-            height: 120px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             border: 4px solid rgba(255, 255, 255, 0.8);
             background: var(--white);
@@ -344,7 +350,7 @@
             <div class="login-info-content">
                 <div class="logo-container">
                     <div class="logo">
-                        <i class="bi bi-house-check-fill"></i>
+                        <img src="{{ asset('images/logoLogin.png') }}" alt="Logo Sistem Pertanahan">
                     </div>
                 </div>
                 <h2>Pertanahan Admin</h2>
@@ -361,16 +367,16 @@
 
             {{-- Pesan Error --}}
             @if ($errors->any())
-                <div class="alert alert-danger mt-3">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="alert alert-danger mt-3">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.login.submit') }}" id="loginForm">
+            <form method="POST" action="{{ route('admin.login.post') }}" id="loginForm">
                 @csrf
                 <div class="mb-4">
                     <label for="email" class="form-label">Alamat Email</label>
